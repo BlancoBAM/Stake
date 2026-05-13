@@ -1,0 +1,25 @@
+[package]
+name = "stake"
+version = "0.1.0"
+edition = "2021"
+description = "Linux desktop UI wrapper around Pake"
+license = "MIT"
+
+[dependencies]
+eframe = { version = "0.29", default-features = true }
+egui = "0.29"
+anyhow = "1.0"
+url = "2.5"
+which = "6.0"
+
+[package.metadata.deb]
+maintainer = "Stake Maintainers"
+copyright = "2026, Stake"
+depends = "$auto"
+section = "utility"
+priority = "optional"
+assets = [
+  ["target/release/stake", "usr/bin/", "755"],
+  ["assets/stake.desktop", "usr/share/applications/stake.desktop", "644"],
+  ["assets/stake.svg", "usr/share/icons/hicolor/scalable/apps/stake.svg", "644"],
+]

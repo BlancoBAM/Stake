@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Stake
+Comment=Forge Linux web apps with Pake
+Exec=stake
+Icon=stake
+Terminal=false
+Categories=Utility;Development;
+StartupNotify=true
