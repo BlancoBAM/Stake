@@ -53,5 +53,9 @@ Output: `target/debian/*.deb`
 Desktop entry template is at:
 
 - `assets/stake.desktop`
+<<<<<<< ours
+=======
+- `assets/stake.svg`
+>>>>>>> theirs
 
 It is included in `.deb` packaging metadata and used by the AppImage script.

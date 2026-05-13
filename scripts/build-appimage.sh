@@ -17,6 +17,13 @@ if [ -f assets/stake.png ]; then
   cp assets/stake.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/stake.png"
 fi
 
+<<<<<<< ours
+=======
+if [ -f assets/stake.svg ]; then
+  cp assets/stake.svg "$APPDIR/usr/share/icons/hicolor/scalable/apps/stake.svg"
+fi
+
+>>>>>>> theirs
 if ! command -v linuxdeploy >/dev/null 2>&1; then
   echo "Please install linuxdeploy first: https://github.com/linuxdeploy/linuxdeploy"
   exit 1
@@ -25,7 +32,10 @@ fi
 linuxdeploy --appdir "$APPDIR" --desktop-file assets/stake.desktop --output appimage
 
 echo "Done. AppImage created in project root."
+<<<<<<< ours
 
 if [ -f assets/stake.svg ]; then
   cp assets/stake.svg "$APPDIR/usr/share/icons/hicolor/scalable/apps/stake.svg"
 fi
+=======
+>>>>>>> theirs
