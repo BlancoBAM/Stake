@@ -1,1 +1,4 @@
 /target
+/AppDir
+*.AppImage
+design_reference/

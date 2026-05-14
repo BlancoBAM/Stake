@@ -6,20 +6,30 @@ description = "Linux desktop UI wrapper around Pake"
 license = "MIT"
 
 [dependencies]
-eframe = { version = "0.29", default-features = true }
-egui = "0.29"
-anyhow = "1.0"
-url = "2.5"
-which = "6.0"
+eframe  = { version = "0.29", default-features = true }
+egui    = "0.29"
+anyhow  = "1.0"
+url     = "2.5"
+which   = "6.0"
+image   = { version = "0.25", default-features = false, features = ["png"] }
 
 [package.metadata.deb]
-maintainer = "Stake Maintainers"
-copyright = "2026, Stake"
-depends = "$auto"
-section = "utility"
-priority = "optional"
+maintainer  = "Stake Maintainers"
+copyright   = "2026, Stake"
+depends     = "$auto"
+section     = "utility"
+priority    = "optional"
 assets = [
-  ["target/release/stake", "usr/bin/", "755"],
-  ["assets/stake.desktop", "usr/share/applications/stake.desktop", "644"],
-  ["assets/stake.svg", "usr/share/icons/hicolor/scalable/apps/stake.svg", "644"],
+  ["target/release/stake",        "usr/bin/",                                                    "755"],
+  ["assets/stake.desktop",        "usr/share/applications/stake.desktop",                        "644"],
+  ["assets/stake.svg",            "usr/share/icons/hicolor/scalable/apps/stake.svg",             "644"],
+  ["assets/stake-16.png",         "usr/share/icons/hicolor/16x16/apps/stake.png",               "644"],
+  ["assets/stake-32.png",         "usr/share/icons/hicolor/32x32/apps/stake.png",               "644"],
+  ["assets/stake-48.png",         "usr/share/icons/hicolor/48x48/apps/stake.png",               "644"],
+  ["assets/stake-64.png",         "usr/share/icons/hicolor/64x64/apps/stake.png",               "644"],
+  ["assets/stake-96.png",         "usr/share/icons/hicolor/96x96/apps/stake.png",               "644"],
+  ["assets/stake-128.png",        "usr/share/icons/hicolor/128x128/apps/stake.png",             "644"],
+  ["assets/stake-256.png",        "usr/share/icons/hicolor/256x256/apps/stake.png",             "644"],
+  ["assets/stake-512.png",        "usr/share/icons/hicolor/512x512/apps/stake.png",             "644"],
+  ["assets/Creepster-Regular.ttf","usr/share/fonts/truetype/stake/Creepster-Regular.ttf",       "644"],
 ]

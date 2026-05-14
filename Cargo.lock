@@ -2877,6 +2877,7 @@ dependencies = [
  "anyhow",
  "eframe",
  "egui",
+ "image",
  "url",
  "which",
 ]
