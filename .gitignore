@@ -1,4 +1,25 @@
+# Build output
 /target
 /AppDir
 *.AppImage
+
+# AI / IDE tool directories — never commit these
+.claude/
+.cursor/
+.kilocode/
+.vibecheck/
+.windsurf/
+.copilot/
+.aider*
+.continue/
+
+# AI instruction files at root or in .github
+CLAUDE.md
+.github/copilot-instructions.md
+.github/CLAUDE.md
+
+# Workflow markdown docs (not the actual CI yml)
+/workflows/
+
+# Design reference copies
 design_reference/
