@@ -71,16 +71,36 @@ jobs:
       - name: Build .deb
         run: cargo deb
 
-      - name: Download linuxdeploy
+      - name: Download linuxdeploy and appimage plugin
         run: |
+          # 1. Download and extract core linuxdeploy
           curl -fsSL -o linuxdeploy \
             "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
           chmod +x linuxdeploy
-          # Extract since FUSE may not be available in CI
           ./linuxdeploy --appimage-extract
-          mv squashfs-root linuxdeploy-extracted
-          sudo mv linuxdeploy-extracted/usr/bin/linuxdeploy /usr/local/bin/linuxdeploy || \
-            sudo cp linuxdeploy-extracted/AppRun /usr/local/bin/linuxdeploy
+          sudo mkdir -p /usr/local/share/linuxdeploy
+          sudo mv squashfs-root/* /usr/local/share/linuxdeploy/
+          rm -rf squashfs-root linuxdeploy
+          
+          # Create self-contained wrapper for linuxdeploy
+          echo '#!/bin/sh' | sudo tee /usr/local/bin/linuxdeploy
+          echo 'exec /usr/local/share/linuxdeploy/AppRun "$@"' | sudo tee -a /usr/local/bin/linuxdeploy
+          sudo chmod +x /usr/local/bin/linuxdeploy
+
+          # 2. Download and extract linuxdeploy-plugin-appimage
+          curl -fsSL -o linuxdeploy-plugin-appimage \
+            "https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage"
+          chmod +x linuxdeploy-plugin-appimage
+          ./linuxdeploy-plugin-appimage --appimage-extract
+          sudo mkdir -p /usr/local/share/linuxdeploy-plugin-appimage
+          sudo mv squashfs-root/* /usr/local/share/linuxdeploy-plugin-appimage/
+          rm -rf squashfs-root linuxdeploy-plugin-appimage
+
+          # Create self-contained wrapper for the appimage plugin
+          echo '#!/bin/sh' | sudo tee /usr/local/bin/linuxdeploy-plugin-appimage
+          echo 'exec /usr/local/share/linuxdeploy-plugin-appimage/AppRun "$@"' | sudo tee -a /usr/local/bin/linuxdeploy-plugin-appimage
+          sudo chmod +x /usr/local/bin/linuxdeploy-plugin-appimage
+
 
       - name: Assemble AppDir
         run: |

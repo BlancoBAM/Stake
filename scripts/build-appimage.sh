@@ -46,12 +46,23 @@ if [ -f assets/Creepster-Regular.ttf ]; then
 fi
 
 # linuxdeploy check
-if ! command -v linuxdeploy > /dev/null 2>&1; then
-  echo "Downloading linuxdeploy..."
-  curl -fsSL -o /usr/local/bin/linuxdeploy \
+BIN_DIR="$PWD/target/bin"
+mkdir -p "$BIN_DIR"
+
+if ! command -v linuxdeploy > /dev/null 2>&1 || ! command -v linuxdeploy-plugin-appimage > /dev/null 2>&1; then
+  echo "Downloading linuxdeploy and appimage plugin..."
+  
+  curl -fsSL -o "$BIN_DIR/linuxdeploy" \
     "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
-  chmod +x /usr/local/bin/linuxdeploy
+  chmod +x "$BIN_DIR/linuxdeploy"
+  
+  curl -fsSL -o "$BIN_DIR/linuxdeploy-plugin-appimage" \
+    "https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage"
+  chmod +x "$BIN_DIR/linuxdeploy-plugin-appimage"
 fi
+
+export PATH="$BIN_DIR:$PATH"
+export APPIMAGE_EXTRACT_AND_RUN=1
 
 echo "→ Building AppImage..."
 linuxdeploy \
@@ -59,5 +70,6 @@ linuxdeploy \
   --desktop-file assets/stake.desktop \
   --icon-file assets/stake-256.png \
   --output appimage
+
 
 echo "✓ AppImage created in project root."
