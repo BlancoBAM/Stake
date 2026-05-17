@@ -1,61 +1,90 @@
-# Stake
+# <p align="center"><img src="assets/stake-256.png" alt="Stake Logo" width="160"></p>
+# <p align="center">S T A K E</p>
+<p align="center">
+  <strong>Forge lightweight Linux web apps with Pake</strong>
+</p>
 
-Stake is a Rust Linux desktop app that provides a themed GUI for running [`pake`](https://github.com/tw93/pake):
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Lilith%20Linux-red?style=for-the-badge&logo=linux" alt="Platform: Lilith Linux">
+  <img src="https://img.shields.io/badge/Built%20With-Rust-black?style=for-the-badge&logo=rust" alt="Built With: Rust">
+  <img src="https://img.shields.io/badge/Powered%20By-Pake-orange?style=for-the-badge" alt="Powered By: Pake">
+</p>
 
-- Website URL input
-- App Title input
-- **Create** button that runs `pake <url> --name <title>`
+---
 
-## Important: how to use this with your local `pake` clone
+## 🩸 Overview
 
-You **do not** need to `git apply` these files into the upstream `pake` repo.
+**Stake** is a high-performance, premium-themed Rust/egui desktop application that serves as a custom-designed GUI wrapper around [`pake`](https://github.com/tw93/pake). 
 
-Instead, keep `Stake` as its **own repository/project**, then install `pake` on the system and let Stake call it as an external command.
+Specifically crafted and optimized to match the gothic and sleek aesthetic of **Lilith Linux**, Stake allows you to instantaneously turn any web page into a native, ultra-lightweight desktop application with a single click.
 
-If you already tried applying patches into `pake` and got conflicts (`U .gitignore`, `U README.md`), discard that attempt in the pake repo:
+<p align="center">
+  <img src="assets/stake-hero.png" alt="Stake UI Screenshot" width="550" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);">
+</p>
 
+---
+
+## ⚡ Features
+
+- **Instant App Forging**: Enter any website URL and a custom app name to build a lightweight desktop app.
+- **Ultra-Lightweight**: Built on top of Rust and Pake, resulting in packages that are up to **40x smaller** than standard Electron apps.
+- **Lilith Linux Native**: Designed from the ground up to match the visual language, typography (featuring the Creepster gothic font), and premium dark aesthetic of Lilith Linux.
+- **Dual Packaging Options**: Easily generate native `.deb` installers or highly portable `.AppImage` packages.
+
+---
+
+## 🛠️ Installation & Setup
+
+Stake requires a local installation of `pake` on your system. Keep Stake as its own independent repository, install `pake` globally, and Stake will handle the rest!
+
+### Prerequisites
+
+Ensure you have `pake` installed on your system:
 ```bash
-git merge --abort || true
-git reset --hard
-git clean -fd
+npm install -g pake-cli
 ```
 
-Then build Stake separately.
+### Building from Source
 
-## Build
+To run or build Stake locally:
 
 ```bash
-cargo run
+# Clone the repository and navigate in
+git clone https://github.com/BlancoBAM/Stake.git
+cd Stake
+
+# Run the desktop app
+cargo run --release
 ```
 
-## Packaging for Linux distro integration
+---
 
-### Build `.deb`
+## 📦 Packaging
+
+Stake includes pre-configured automation scripts to package the application for distribution:
+
+### 1. Build Debian Package (`.deb`)
 
 ```bash
 ./scripts/build-deb.sh
 ```
+*Output: `target/debian/stake_*.deb`*
 
-Output: `target/debian/*.deb`
-
-### Build `.AppImage`
-
-1. Install `linuxdeploy` (from its official releases).
-2. A default vector icon is already included at `assets/stake.svg` (and optional PNG override at `assets/stake.png`).
-3. Run:
+### 2. Build AppImage (`.AppImage`)
 
 ```bash
 ./scripts/build-appimage.sh
 ```
+*Output: `Stake-*.AppImage`*
 
-## Desktop launcher
+---
 
-Desktop entry template is at:
+## 🖤 Credits & Appreciation
 
-- `assets/stake.desktop`
-<<<<<<< ours
-=======
-- `assets/stake.svg`
->>>>>>> theirs
+- **Pake**: Deep appreciation and gratitude to [tw93/pake](https://github.com/tw93/pake) for creating the phenomenal, lightweight web-app compiler that powers Stake's backend under the hood.
+- **Lilith Linux**: Custom-crafted with devotion to match the dark and gothic desktop environments of Lilith Linux.
 
-It is included in `.deb` packaging metadata and used by the AppImage script.
+---
+<p align="center">
+  <i>Forge your apps. Strike them down. Stake your claim.</i>
+</p>
