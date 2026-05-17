@@ -1,7 +1,7 @@
 # <p align="center"><img src="assets/stake-256.png" alt="Stake Logo" width="160"></p>
 # <p align="center">S T A K E</p>
 <p align="center">
-  <strong>Forge lightweight Linux web apps with Pake</strong>
+  <strong>Stake web apps to your desktop</strong>
 </p>
 
 <p align="center">
@@ -86,5 +86,5 @@ Stake includes pre-configured automation scripts to package the application for 
 
 ---
 <p align="center">
-  <i>Forge your apps. Strike them down. Stake your claim.</i>
+  <i>Stake web apps to your desktop.</i>
 </p>
