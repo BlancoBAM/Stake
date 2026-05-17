@@ -145,7 +145,10 @@ jobs:
           DEB=$(find target/debian -name '*.deb' | head -1)
           mv "$DEB" "stake-${{ github.ref_name }}-amd64.deb"
           APPIMAGE=$(find . -maxdepth 1 -name '*.AppImage' | head -1)
-          mv "$APPIMAGE" "Stake-${{ github.ref_name }}-x86_64.AppImage"
+          TARGET="Stake-${{ github.ref_name }}-x86_64.AppImage"
+          if [ "$APPIMAGE" != "./$TARGET" ] && [ "$APPIMAGE" != "$TARGET" ]; then
+            mv "$APPIMAGE" "$TARGET"
+          fi
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
