@@ -12,8 +12,9 @@ const HERO_BYTES: &[u8] = include_bytes!("../assets/stake-hero.png");
 fn main() -> eframe::Result<()> {
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
-            .with_inner_size(Vec2::new(420.0, 680.0))
-            .with_min_inner_size(Vec2::new(360.0, 560.0))
+            // Start at a comfortable fixed size — tall enough to show the whole UI.
+            .with_inner_size(Vec2::new(480.0, 860.0))
+            .with_min_inner_size(Vec2::new(380.0, 680.0))
             .with_title("Stake")
             .with_resizable(true),
         ..Default::default()
@@ -64,22 +65,28 @@ impl eframe::App for StakeApp {
         egui::CentralPanel::default()
             .frame(egui::Frame::none().fill(Color32::BLACK))
             .show(ctx, |ui| {
-                // Centre the card
                 let avail = ui.available_size();
-                let card_w = avail.x.min(440.0);
+                let card_w = avail.x.min(460.0);
 
-                ui.horizontal(|ui| {
-                    // left spacer
-                    ui.add_space((avail.x - card_w) / 2.0);
+                // A scroll area ensures the card is never clipped — if the
+                // window is somehow small the user can still scroll to the button.
+                egui::ScrollArea::vertical()
+                    .auto_shrink([false, false])
+                    .show(ui, |ui| {
+                        ui.horizontal(|ui| {
+                            // horizontal centering
+                            ui.add_space((avail.x - card_w) / 2.0);
 
-                    ui.vertical(|ui| {
-                        ui.set_width(card_w);
-                        // top spacer
-                        ui.add_space(((avail.y - 600.0) / 2.0).max(8.0));
-
-                        self.draw_card(ui, ctx);
+                            ui.vertical(|ui| {
+                                ui.set_width(card_w);
+                                // small top margin — no vertical-centering math that
+                                // can push the card below the visible area.
+                                ui.add_space(12.0);
+                                self.draw_card(ui, ctx);
+                                ui.add_space(12.0);
+                            });
+                        });
                     });
-                });
             });
     }
 }
@@ -104,7 +111,8 @@ impl StakeApp {
             if let Some(tex) = &self.hero_texture {
                 let img_w = ui.available_width();
                 let aspect = tex.size()[1] as f32 / tex.size()[0] as f32;
-                let img_h = img_w * aspect;
+                // Cap the hero height so the form section is always visible.
+                let img_h = (img_w * aspect).min(340.0);
 
                 let (rect, _) = ui.allocate_exact_size(
                     Vec2::new(img_w, img_h),
@@ -469,33 +477,48 @@ fn load_png_texture(ctx: &egui::Context, bytes: &[u8], name: &str) -> Option<Tex
 // ── pake runner ───────────────────────────────────────────────────────────────
 
 fn run_pake(url: &str, app_name: &str) -> anyhow::Result<String> {
-    let normalized_name = app_name.trim();
     let normalized_url = url.trim();
+    let normalized_name = app_name.trim();
 
+    // ── validation ─────────────────────────────────────────────────────────
+    if normalized_url.is_empty() {
+        return Err(anyhow!("Website URL is required."));
+    }
     if normalized_name.is_empty() {
-        return Err(anyhow!("Title is required."));
+        return Err(anyhow!("App title is required."));
     }
 
-    url::Url::parse(normalized_url).context("Please enter a valid URL including protocol.")?;
+    // Ensure the URL has a scheme so pake doesn't reject it.
+    let parsed = url::Url::parse(normalized_url)
+        .context("Please enter a valid URL (e.g. https://example.com).")?;
+    if parsed.scheme() != "https" && parsed.scheme() != "http" {
+        return Err(anyhow!("URL must start with http:// or https://."));
+    }
 
-    let pake = which::which("pake").context("Could not find `pake` binary in PATH.")?;
+    // ── locate pake binary ──────────────────────────────────────────────────
+    let pake = which::which("pake")
+        .context("`pake` is not installed. Run: npm install -g pake-cli")?;
 
-    let output = Command::new(pake)
+    // ── invoke pake ─────────────────────────────────────────────────────────
+    // pake CLI: pake <url> --name <AppName>
+    // The URL is the first positional argument; --name sets the window title
+    // and the output binary name.
+    let output = Command::new(&pake)
         .arg(normalized_url)
         .arg("--name")
         .arg(normalized_name)
         .output()
-        .context("Failed to execute pake.")?;
+        .context("Failed to execute pake. Is Node.js installed?")?;
 
     if !output.status.success() {
-        return Err(anyhow!(
-            "pake failed: {}",
-            String::from_utf8_lossy(&output.stderr)
-        ));
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let detail = if !stderr.trim().is_empty() { stderr } else { stdout };
+        return Err(anyhow!("pake failed:\n{}", detail));
     }
 
     Ok(format!(
-        "✓ Created app `{}` for {}",
-        normalized_name, normalized_url
+        "✓ Created app \"{}\" — check current directory for the binary.",
+        normalized_name
     ))
 }
