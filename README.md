@@ -35,47 +35,49 @@ Specifically crafted and optimized to match the gothic and sleek aesthetic of **
 
 ## 🛠️ Installation & Setup
 
-Stake requires a local installation of `pake` on your system. Keep Stake as its own independent repository, install `pake` globally, and Stake will handle the rest!
+Stake requires `pake-cli` to forge web apps into native desktop apps.
 
 ### Prerequisites
 
-Ensure you have `pake` installed on your system:
 ```bash
+# Install pake-cli (requires Node.js / npm)
 npm install -g pake-cli
 ```
 
-### Building from Source
-
-To run or build Stake locally:
+### From Source (Recommended)
 
 ```bash
-# Clone the repository and navigate in
+# Install build dependencies + clone
+sudo apt install -y pkg-config libxkbcommon-dev libssl-dev build-essential
+
 git clone https://github.com/BlancoBAM/Stake.git
 cd Stake
 
-# Run the desktop app
-cargo run --release
+# Run the install script (builds, installs binary + desktop entry)
+bash install.sh
 ```
+
+### Binary Download
+
+Download the pre-built binary from the [Releases page](https://github.com/BlancoBAM/Stake/releases/latest):
+
+```bash
+wget https://github.com/BlancoBAM/Stake/releases/latest/download/stake-linux-amd64
+sudo install -m 0755 stake-linux-amd64 /usr/local/bin/stake
+```
+
+> **Note:** AppImage releases are not currently supported.
 
 ---
 
 ## 📦 Packaging
 
-Stake includes pre-configured automation scripts to package the application for distribution:
-
-### 1. Build Debian Package (`.deb`)
+### Build Debian Package (`.deb`)
 
 ```bash
 ./scripts/build-deb.sh
 ```
 *Output: `target/debian/stake_*.deb`*
-
-### 2. Build AppImage (`.AppImage`)
-
-```bash
-./scripts/build-appimage.sh
-```
-*Output: `Stake-*.AppImage`*
 
 ---
 
